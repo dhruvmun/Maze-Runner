@@ -20,7 +20,7 @@ class Maze:
 				tuple.append((x-1,y))
 		if x+1<=dim-1:
 			if mazeCells[x+1][y]==1:
-				tuple.append((0,1))
+				tuple.append((x+1,y))
 		if y-1>=0:
 			if mazeCells[x][y-1]==1:
 				tuple.append((x,y-1))
