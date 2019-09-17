@@ -1,21 +1,30 @@
 import random;
-from collections import defaultdict;
 
 class Maze:
 	# bool flag;
-	mazeCells = {};
+	mazeCells =[]
 
-def generateMaze(dim, p):
-	mazeCells = [];
-	for i in range(dim):
-		mazeCells.append([]);
-		for j in range(dim):
-			if(random.uniform(0,1) <= p):
-				mazeCells[i].append(1);
-			else:
-				mazeCells[i].append(0);
-	return mazeCells;
+	def generateMaze(dim, p):
+		for i in range(dim):
+			for j in range(dim):
+				if (random.uniform(0, 1) <= p):
+					mazeCells[i][j] = 1;
+				else:
+					mazeCells[i][j] = 0;
+		return mazeCells;
 
-mazeCells = generateMaze(10,0.6);
-for i in range(10):
-	print (str(i) + ":"  + str(mazeCells[i]));
+	def giveEligibleChild(x, y, dim):
+		tuple=[]
+		if x-1 >= 0:
+			if mazeCells[x-1][y]==1:
+				tuple.append((x-1,y))
+		if x+1<=dim-1:
+			if mazeCells[x+1][y]==1:
+				tuple.append((0,1))
+		if y-1>=0:
+			if mazeCells[x][y-1]==1:
+				tuple.append((x,y-1))
+		if y+1<=dim-1:
+			if mazeCells[x][y+1]==1:
+				tuple.append((x,y+1))
+		return tuple
