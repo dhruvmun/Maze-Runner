@@ -52,13 +52,13 @@ class Maze:
 				for child in childList:
 					new_Path = list(recent_Path)			#New list to append in fringe after adding the child
 					new_Path.append(child)
-					fringe.append(new_path)
+					fringe.append(new_Path)
 					# return path if neighbour is goal
 					if child == (self.dimension-1,self.dimension-1):  #If child is goal return the new list
-						return new_path
+						return new_Path
 				closedSet.append((x,y))						#Mark last node of element dequeued as Visited
 
-
+		# print(recent_Path)
 		return False								# Return False if goal not found
 
 
@@ -75,3 +75,41 @@ class Maze:
 					fringe.append((cx,cy,path + [(cx,cy)]));
 				closedSet.append((x,y));
 		return [];
+
+# m=Maze(15,0.5)
+# # print(m.mazeCells)
+# for row in m.mazeCells:
+# 	print(row)
+# print(m.BFS())
+
+	def bidirection(self):
+		fringe1 = [[(0, 0)]]
+		fringe2 = [[(self.dimension - 1, self.dimension - 1)]]
+		closed1 = {(0, 0): True}
+		closed2 = {(self.dimension - 1, self.dimension - 1): True}
+		while fringe1 and fringe2:
+			if fringe1:
+				recent_path1 = fringe1.pop(0)
+				(x, y) = recent_path1[-1]
+				children = self.giveEligibleChild(x, y)
+				for child in children:
+					if child not in closed1:
+						closed1[child] = True
+						new_Path = list(recent_path1)  # New list to append in fringe after adding the child
+						new_Path.append(child)
+						fringe1.append(new_Path)
+						if child == (self.dimension - 1, self.dimension - 1) or child in fringe2:
+							return new_Path
+			if fringe2:
+				recent_path2 = fringe2.pop(0)
+				(x, y) = recent_path2[-1]
+				children = self.giveEligibleChild(x, y)
+				for child in children:
+					if child not in closed2:
+						closed2[child] = True
+						new_Path = list(recent_path2)  # New list to append in fringe after adding the child
+						new_Path.append(child)
+						fringe2.append(new_Path)
+						if child == (self.dimension - 1, self.dimension - 1) or child in fringe11:
+							return new_Path
+		return False
