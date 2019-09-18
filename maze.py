@@ -1,4 +1,6 @@
-import random
+import random;
+import heapq;
+import helper;
 
 class Maze:
 	# int dimension;
@@ -76,13 +78,6 @@ class Maze:
 				closedSet.append((x,y));
 		return [];
 
-
-# m=Maze(15,0.5)
-# # print(m.mazeCells)
-# for row in m.mazeCells:
-# 	print(row)
-# print(m.BFS())
-
 	def bidirection(self):
 		fringe1 = [[(0, 0)]]
 		fringe2 = [[(self.dimension - 1, self.dimension - 1)]]
@@ -141,5 +136,17 @@ class Maze:
 				closed_set.append(current_state)
 		return "NO SOLUTION"
 
-
-
+	def aStarSearch(self, (startx, starty), (endx , endy),distanceFunction):
+		fringe = [(0,(startx,starty, [(startx, starty)]))];
+		closedSet = [];
+		while (len(fringe) != 0):
+			(d,(x, y, path)) = heapq.heappop(fringe);
+			if (x,y) not in closedSet:
+				if (x,y) == (endx,endy):
+					return path;
+				eligibleChildren = self.giveEligibleChild(x,y);
+				for (cx,cy) in eligibleChildren:
+					heuristic = distanceFunction((cx,cy),(endx,endy))+len(path);
+					heapq.heappush(fringe,(heuristic,(cx,cy,path + [(cx,cy)])));
+				closedSet.append((x,y));
+		return [];
