@@ -19,6 +19,7 @@ class Maze:
 		self.mazeCells[0][0] = 0
 		self.mazeCells[self.dimension-1][self.dimension-1] = 0
 
+
 	def giveEligibleChild(self, x, y):
 		children=[]
 		if x-1 >= 0:
@@ -61,3 +62,16 @@ class Maze:
 		return False								# Return False if goal not found
 
 
+	def treeSearch(self, (startx, starty), (endx , endy)):
+		fringe = [(startx,starty, [(startx, starty)])];
+		closedSet = [];
+		while (len(fringe) != 0):
+			(x, y, path) = fringe.pop();
+			if (x,y) not in closedSet:
+				if (x,y) == (endx,endy):
+					return path;
+				eligibleChildren = self.giveEligibleChild(x,y);
+				for (cx,cy) in eligibleChildren:
+					fringe.append((cx,cy,path + [(cx,cy)]));
+				closedSet.append((x,y));
+		return [];
