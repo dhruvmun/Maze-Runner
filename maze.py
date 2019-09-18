@@ -103,3 +103,4 @@ class Maze:
 				closed_set.append(current_state)
 		return "NO SOLUTION"
 
+
