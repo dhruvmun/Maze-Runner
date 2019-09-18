@@ -77,14 +77,14 @@ class Maze:
 		return [];
 
 
-	def bfs(self):
+	def dfs(self):
 
 		goal_state = (self.dimension-1,self.dimension-1)
 		fringe = [(0,0,[(0,0)])] #x,y,path
 		closed_set = [] 
 		
 		while (len(fringe)):
-			x,y,path = fringe.pop(0)
+			x,y,path = fringe.pop()
 			current_state = (x,y)
 			
 			if(current_state not in closed_set):
