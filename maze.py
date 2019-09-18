@@ -76,6 +76,7 @@ class Maze:
 				closedSet.append((x,y));
 		return [];
 
+
 # m=Maze(15,0.5)
 # # print(m.mazeCells)
 # for row in m.mazeCells:
@@ -113,3 +114,32 @@ class Maze:
 						if child == (self.dimension - 1, self.dimension - 1) or child in fringe11:
 							return new_Path
 		return False
+
+	def dfs(self):
+
+		goal_state = (self.dimension-1,self.dimension-1)
+		fringe = [(0,0,[(0,0)])] #x,y,path
+		closed_set = [] 
+		
+		while (len(fringe)):
+			x,y,path = fringe.pop()
+			current_state = (x,y)
+			
+			if(current_state not in closed_set):
+				path.append(current_state)
+				
+				if (current_state == goal_state):
+					return path
+
+				children = self.giveEligibleChild(x,y)
+				#print(children)
+				
+				for a,b in children:
+					fringe.append((a,b,path))
+
+				
+				closed_set.append(current_state)
+		return "NO SOLUTION"
+
+
+
