@@ -139,18 +139,21 @@ class Maze:
 		return "NO SOLUTION"
 
 	def aStarSearch(self, (startx, starty), (endx , endy),distanceFunction):
-		fringe = [(0,(startx,starty, [(startx, starty)]))];
+		path = {}
+		fringe = [(0,(startx,starty, (-1, -1, 0)))];
 		closedSet = [];
 		while (len(fringe) != 0):
-			(d,(x, y, path)) = heapq.heappop(fringe);
+			(heuristicValue,(x, y, (parentx,parenty,pathLength))) = heapq.heappop(fringe);
 			if (x,y) not in closedSet:
 				if (x,y) == (endx,endy):
-					return path;
+					path[(x,y)] = (parentx,parenty)
+					return self.getPath(path)
 				eligibleChildren = self.giveEligibleChild(x,y);
 				for (cx,cy) in eligibleChildren:
-					heuristic = distanceFunction((cx,cy),(endx,endy))+len(path);
-					heapq.heappush(fringe,(heuristic,(cx,cy,path + [(cx,cy)])));
-				closedSet.append((x,y));
+					heuristic = distanceFunction((cx,cy),(endx,endy))+pathLength
+					heapq.heappush(fringe,(heuristic,(cx,cy,(x,y,pathLength+1))))
+				closedSet.append((x,y))
+				path[(x,y)] = (parentx,parenty)
 		return [];
 
 	def getPath(self, path):
