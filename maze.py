@@ -63,19 +63,21 @@ class Maze:
 		# print(recent_Path)
 		return False								# Return False if goal not found
 
-
 	def treeSearch(self, (startx, starty), (endx , endy)):
-		fringe = [(startx,starty, [(startx, starty)])];
+		path = {};
+		fringe = [(startx,starty, (-1,-1))];
 		closedSet = [];
 		while (len(fringe) != 0):
-			(x, y, path) = fringe.pop();
+			(x, y, (parentx,parenty)) = fringe.pop();
 			if (x,y) not in closedSet:
 				if (x,y) == (endx,endy):
-					return path;
+					path[(x,y)] = (parentx,parenty)
+					return self.getPath(path);
 				eligibleChildren = self.giveEligibleChild(x,y);
 				for (cx,cy) in eligibleChildren:
-					fringe.append((cx,cy,path + [(cx,cy)]));
-				closedSet.append((x,y));
+					fringe.append((cx,cy,(x,y)))
+				closedSet.append((x,y))
+				path[(x,y)] = (parentx,parenty)
 		return [];
 
 	def bidirection(self):
@@ -150,3 +152,10 @@ class Maze:
 					heapq.heappush(fringe,(heuristic,(cx,cy,path + [(cx,cy)])));
 				closedSet.append((x,y));
 		return [];
+
+	def getPath(self, path):
+		pathList = [(self.dimension-1,self.dimension-1)]
+		while path[pathList[-1]]!=(-1,-1):
+			pathList.append(path[pathList[-1]])
+		pathList.reverse()
+		return pathList
