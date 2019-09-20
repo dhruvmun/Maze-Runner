@@ -108,7 +108,7 @@ class Maze:
 						new_Path = list(recent_path2)  # New list to append in fringe after adding the child
 						new_Path.append(child)
 						fringe2.append(new_Path)
-						if child == (self.dimension - 1, self.dimension - 1) or child in fringe11:
+						if child == (0, 0) or child in fringe1:
 							return new_Path
 		return False
 
