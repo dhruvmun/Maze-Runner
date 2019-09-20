@@ -138,7 +138,9 @@ class Maze:
 				closed_set.append(current_state)
 		return "NO SOLUTION"
 
-	def aStarSearch(self, (startx, starty), (endx , endy),distanceFunction):
+	def aStarSearch(self, distanceFunction):
+		(startx, starty) = (0,0)
+		(endx , endy) = (self.dimension -1, self.dimension-1)
 		path = {}
 		fringe = [(0,(startx,starty, (-1, -1, 0)))];
 		closedSet = [];
