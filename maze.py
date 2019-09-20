@@ -1,6 +1,7 @@
 import random;
 import heapq;
 import helper;
+import node;
 
 class Maze:
 	# int dimension;
@@ -11,9 +12,12 @@ class Maze:
 		self.dimension = dim
 		self.probability = p
 		self.mazeCells = []
+		self.nodes = []
 		for i in range(self.dimension):
 			self.mazeCells.append([])
+			self.nodes.append([])
 			for j in range(self.dimension):
+				self.nodes[i].append(node.Node(i,j,None,-1))
 				if (random.uniform(0, 1) <= self.probability):
 					self.mazeCells[i].append(1)
 				else:
@@ -21,6 +25,11 @@ class Maze:
 		self.mazeCells[0][0] = 0
 		self.mazeCells[self.dimension-1][self.dimension-1] = 0
 
+	def resetNodes(self):
+		for i in range(self.dimension):
+			for j in range(self.dimension):
+				self.nodes[i][j].parent = None
+				self.nodes[i][j].pathLength = -1
 
 	def giveEligibleChild(self, x, y):
 		children=[]
