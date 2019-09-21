@@ -1,29 +1,37 @@
 import turtle
 import maze
 
-def setTurtle(turtleObject):
-	turtleObject.speed(0)
+class Visualize:
 
-def drawSquare(turtleObject, x, y, scale, fill):
-	turtleObject.up()
-	turtleObject.goto(x*scale, -y*scale)
-	turtleObject.down()
-	if fill :
-		turtleObject.begin_fill()
-	for i in range(4):
-		turtleObject.forward(scale)
-		turtleObject.left(90)
-	if fill :
-		turtleObject.end_fill()
+	def __init__(self, title, color):
+		self.turtleObject = turtle.Turtle()
+		self.screenObject = turtle.Screen()
+		self.screenObject.title(title)
+		self.turtleObject.speed(0)
+		self.scale = 15
+		self.pathColor = color
+
+	def drawSquare(self, x, y, fill):
+		self.turtleObject.up()
+		self.turtleObject.goto(x*self.scale, -y*self.scale)
+		self.turtleObject.down()
+		if fill :
+			self.turtleObject.begin_fill()
+		for i in range(4):
+			self.turtleObject.forward(self.scale)
+			self.turtleObject.left(90)
+		if fill :
+			self.turtleObject.end_fill()
 
 
-def drawMaze(mazeObject, turtleObject, scale):
-	for row in range(mazeObject.dimension):
-		for column in range(mazeObject.dimension):
-			drawSquare(turtleObject, column, row, scale, mazeObject.mazeCells[row][column] == 1)
+	def drawMaze(self, mazeObject):
+		for row in range(mazeObject.dimension):
+			for column in range(mazeObject.dimension):
+				self.drawSquare(column, row, mazeObject.mazeCells[row][column] == 1)
 
-def drawPath(path, turtleObject, scale, color):
-	turtle.fillcolor(color)
-	for (row, column) in path:
-		drawSquare(turtleObject, column, row, scale, True)
+	def drawPath(self, path):
+		self.turtleObject.fillcolor(self.pathColor)
+		for (row, column) in path:
+			self.drawSquare(column, row, True)
+		self.turtleObject.ht()
 			
