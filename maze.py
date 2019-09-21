@@ -39,29 +39,29 @@ class Maze:
 		return children
 
 	def BFS(self):
-		fringe = [[(0, 0)]]  # Initial Start node of Matrix which is also the path traversed till now
+		fringe = [(0, 0,(-1,-1))]  # Initial Start node of Matrix which is also the path traversed till now
 		closedSet = []
-
+		path = {}
 		while len(fringe) != 0:		#Fringe not empty execute
-			recent_Path = fringe.pop(0)		#Dequeue the first element of Fringe
-			(x,y)=recent_Path[-1]		# (x,y) will be the last node of element dequeued from which we want to continue our path
+			(x,y,(parentx, parenty)) = fringe.pop(0)		#Dequeue the first element of Fringe
+			# (x,y)=recent_Path[-1]		# (x,y) will be the last node of element dequeued from which we want to continue our path
 			# x,y=state
 			# print(recent_path)
 
 			if (x,y) not in closedSet:
 				childList = self.giveEligibleChild(x,y)		#Generate Eligible Children(Unblocked) if not in closed set
+				path[(x,y)] = (parentx,parenty)
 				# print(childList)
-				for child in childList:
-					new_Path = list(recent_Path)			#New list to append in fringe after adding the child
-					new_Path.append(child)
-					fringe.append(new_Path)
+				for (childx, childy) in childList:
+					fringe.append((childx, childy, (x,y)))
 					# return path if neighbour is goal
-					if child == (self.dimension-1,self.dimension-1):  #If child is goal return the new list
-						return new_Path
+					if (childx, childy) == (self.dimension-1,self.dimension-1):  #If child is goal return the new list
+						path[(childx,childy)] = (x,y)
+						return self.getPath(path)
 				closedSet.append((x,y))						#Mark last node of element dequeued as Visited
 
 		# print(recent_Path)
-		return False								# Return False if goal not found
+		return []								# Return False if goal not found
 
 	def treeSearch(self, (startx, starty), (endx , endy)):
 		path = {};
