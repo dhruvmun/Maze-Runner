@@ -63,7 +63,9 @@ class Maze:
 		# print(recent_Path)
 		return []								# Return False if goal not found
 
-	def treeSearch(self, (startx, starty), (endx , endy)):
+	def treeSearch(self):
+		(startx, starty) = (0,0)
+		(endx , endy) = (self.dimension -1, self.dimension-1)
 		path = {};
 		fringe = [(startx,starty, (-1,-1))];
 		closedSet = [];

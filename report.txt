@@ -1,4 +1,4 @@
-2.1
+Q: 2.1
 
 Based on data from data21.csv
 
@@ -67,3 +67,12 @@ Average time : 220,0.2 , 60.9820989768
 If chosen timelimit for each iteration is 30seconds, then based on the above data we took 200 as size of dim so that for the solvable probabilities of 0.2 to 0.3 solution appears in 30 seconds
 dim is 200
 
+Q: 2.2
+
+Based on data from data22.csv multiple things can be asserted
+
+* Since this is a sparse maze (p = 0.2) so not many back tracks are required so dfs is finding path in very less time compared to other algos however length of path is very high compared to others as it keeps expanding until it reaches end without worrying about the round about ways it may take during the path
+
+* BFS is producing as optimized paths as A*, proves it's correctness as it stops exploring further after it reaches first solution during breadth first search. However since it explores all possibilities at each and every stage it takes longer time than any other algo
+
+* Euclid algo is taking more time than manhattan because of the heuristic, manhattan gives exact estimate of actual shortest path because in a maze we restrict cross paths, where as euclid considers cross movement due to which the estimate is bad. This also proves that heurisitic influences the time taken for A* algorithm. However, shortest path lengths match which prove the correctness of the algorithm.
