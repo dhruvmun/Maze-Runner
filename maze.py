@@ -115,28 +115,28 @@ class Maze:
 	def dfs(self):
 
 		goal_state = (self.dimension-1,self.dimension-1)
-		fringe = [(0,0,[(0,0)])] #x,y,path
+		fringe = [(0,0,(-1,-1))] #x,y,path
 		closed_set = [] 
-		
+		path = {}
 		while (len(fringe)):
-			x,y,path = fringe.pop()
+			(x,y,(parentx, parenty)) = fringe.pop()
 			current_state = (x,y)
 			
 			if(current_state not in closed_set):
-				path.append(current_state)
-				
+
 				if (current_state == goal_state):
-					return path
+					path[current_state] = (parentx, parenty)
+					return self.getPath(path)
 
 				children = self.giveEligibleChild(x,y)
 				#print(children)
 				
 				for a,b in children:
-					fringe.append((a,b,path))
-
+					fringe.append((a,b,(x,y)))
+				path[current_state] = (parentx, parenty)
 				
 				closed_set.append(current_state)
-		return "NO SOLUTION"
+		return []
 
 	def aStarSearch(self, distanceFunction):
 		(startx, starty) = (0,0)
