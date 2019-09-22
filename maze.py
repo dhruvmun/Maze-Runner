@@ -112,7 +112,7 @@ class Maze:
 						fringe2.append(new_Path)
 						if child == (0, 0) or child in fringe1:
 							return new_Path
-		return False
+		return []
 
 	def dfs(self):
 
@@ -154,7 +154,7 @@ class Maze:
 					return self.getPath(path)
 				eligibleChildren = self.giveEligibleChild(x,y);
 				for (cx,cy) in eligibleChildren:
-					heuristic = distanceFunction((cx,cy),(endx,endy))+pathLength
+					heuristic = distanceFunction(cx,cy,endx,endy)+pathLength
 					heapq.heappush(fringe,(heuristic,(cx,cy,(x,y,pathLength+1))))
 				closedSet.append((x,y))
 				path[(x,y)] = (parentx,parenty)
