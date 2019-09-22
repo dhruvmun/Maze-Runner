@@ -8,9 +8,11 @@ import random
 # def avgList(lst,count):
 #     return lst/count
 
-# p0=question23.probablity_threshold()
-# prob=[round(random.uniform(0,p0),2) for _ in range(6)]
-prob=[0.1,0.2,0.3,0.4,0.5]
+# p0=question23.probability_threshold()
+prob=[round(random.uniform(0,0.5),2) for _ in range(6)]
+prob.sort()
+# print(prob)
+# prob=[0.1,0.2,0.3,0.4,0.5]
 dim=20
 no_of_run=15
 bfs=[]
@@ -76,11 +78,11 @@ for p in prob:
 # print(bibfs)
 # print(euclid)
 # print(mann)
-plt.plot(prob, bfs)
-plt.plot(prob, dfs)
-plt.plot(prob,bibfs)
-plt.plot(prob,euclid)
-plt.plot(prob,mann)
+plt.plot(prob, bfs,'g')
+plt.plot(prob, dfs,'r')
+plt.plot(prob,bibfs,'b')
+plt.plot(prob,euclid,'y')
+plt.plot(prob,mann,'k')
 plt.ylabel('Average')
 plt.xlabel('Density')
 plt.title('Average vs Density')
