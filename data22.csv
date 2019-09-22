@@ -1,0 +1,5 @@
+Dimension : 200 Probability : 0.2
+DFS time: 27.5735609531sec Length : 1987
+BFS time: 37.271146059sec Length : 399
+Euclid A* time: 36.1121110916sec Length : 399
+Manhattan A* time: 6.90147709846sec Length : 399
