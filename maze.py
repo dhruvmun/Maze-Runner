@@ -35,7 +35,11 @@ class Maze:
 			if self.mazeCells[x][y+1]==0:
 				children.append((x,y+1))
 		return children
+	
+	def printPath():
+		return something
 
+		
 	def BFS(self):
 		fringe = [[(0, 0)]]  # Initial Start node of Matrix which is also the path traversed till now
 		closedSet = []
@@ -104,3 +108,9 @@ class Maze:
 		return "NO SOLUTION"
 
 
+
+x = Maze(5, 0.3)
+for row in x.mazeCells:
+	print row
+
+print x.dfs2()
