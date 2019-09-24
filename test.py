@@ -3,6 +3,7 @@ import helper;
 import time
 import turtle
 import visualization
+import hardMaze
 
 
 # mazeObject.treeSearch((0,0),(n-1,n-1));
@@ -39,7 +40,22 @@ def temp2():
 # for row in mazeObject.mazeCells:
 # 	print row;
 # visualization.drawMaze(mazeObject,t,scale)
-# path = mazeObject.aStarSearch((0,0),(mazeObject.dimension-1,mazeObject.dimension-1),helper.euclidDistance)
+# hardnessScore = mazeObject.hardnessScore(helper.euclidDistance)
+# print (hardnessScore)
 # print path
 # visualization.drawPath(path, t, scale, 'yellow')
 # p = raw_input()
+
+
+# hard = hardMaze.beamSearch(20,0.35,5)
+
+# visualise = visualization.Visualize("DFS", 'yellow', 0, 0)
+# visualise.drawMaze(hard[1])
+# print "Score:" + str(-hard[0])
+# x = raw_input()
+
+# normal = maze.Maze(20,0.35)
+# visualise = visualization.Visualize("BFS", 'yellow', 0, 320)
+# visualise.drawMaze(normal)
+# print "Score:" + str(-hard[0])
+# x = raw_input()
