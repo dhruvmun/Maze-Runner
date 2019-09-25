@@ -18,10 +18,12 @@ def giveFireChild(mazeObject, fireset, x, y, q, p0):
 		mazeObject.mazeCells[x][y]=2
 		fireset.append((x,y))
 
+
 def Fire(mazeObject, fireset, q):
 	l = len(fireset)
 	for i in range(l):
 		(x,y) = fireset[i]
+
 		if(x-1>=0 and mazeObject.mazeCells[x-1][y]==0):	#Blocked cell cannot catch fire
 			giveFireChild(mazeObject, fireset,x-1,y,q,p0)
 		if(x+1<=dim-1 and mazeObject.mazeCells[x+1][y]==0):
@@ -31,7 +33,7 @@ def Fire(mazeObject, fireset, q):
 		if(y+1<=dim-1 and mazeObject.mazeCells[x][y+1]==0):
 			giveFireChild(mazeObject, fireset,x,y+1,q,p0)
 
-def aStarSearch(mazeObject, distanceFunction, (startx,starty), (endx , endy)):
+def aStarSearch(mazeObject, distanceFunction, startx,starty, endx , endy):
 	path = {}
 	fringe = [(0,(startx,starty, (-1, -1, 0)))]
 	closedSet = []
@@ -49,19 +51,19 @@ def aStarSearch(mazeObject, distanceFunction, (startx,starty), (endx , endy)):
 			path[(x,y)] = (parentx,parenty)
 	return []
 
+
 def findPath(p, q):
 	# 0->Open, 1->Block, 2->fire
 	mazeObject = maze.Maze(dim, p)
 	mazeObject.mazeCells[0][dim-1] = 2
 	fireset = [(0,dim-1)]
 
-	shortestPath = aStarSearch(mazeObject, helper.euclidDistance, (0,0), (dim-1,dim-1))
 	shortestPath_fire = []
-	while shortestPath_fire != []:
-		shortestPath_fire = aStarSearch(mazeObject, helper.euclidDistance, (0,dim-1), (dim-1,0))
-	
-	if shortestPath == []:
-		return -1  #"No Path Exist"
+	shortestPath = []
+	while shortestPath_fire == [] || shortestPath == []:
+		shortestPath_fire = aStarSearch(mazeObject, helper.manhattanDistance, 0,dim-1, dim-1,0)
+		shortestPath = aStarSearch(mazeObject, helper.manhattanDistance, 0,0, dim-1,dim-1)
+
 	while shortestPath != []:
 		next_step = shortestPath.pop(0)
 		Fire(mazeObject, fireset, q)
@@ -94,3 +96,7 @@ for q in qs:
 	avgsuccess.append(float(s/(s+d)))
 
 plotgraph()
+p0 = 0.2
+dim = 20
+a = findPath(0.2,0.2)
+print (a)
