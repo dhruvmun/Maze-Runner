@@ -100,3 +100,4 @@ p0 = 0.2
 dim = 20
 a = findPath(0.2,0.2)
 print (a)
+
