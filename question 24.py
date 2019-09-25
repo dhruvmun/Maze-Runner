@@ -1,19 +1,16 @@
-# import numpy as np
 import maze
 import helper
 import matplotlib.pyplot as plt
-# import question23
+import question23
 import random
-#
-# def avgList(lst,count):
-#     return lst/count
+import helper_24
 
-# p0=question23.probability_threshold()
-prob=[round(random.uniform(0,0.5),2) for _ in range(6)]
+
+
+p0=question23.probability_threshold()
+prob=[round(random.uniform(0,p0),2) for _ in range(6)]
 prob.sort()
-# print(prob)
-# prob=[0.1,0.2,0.3,0.4,0.5]
-dim=20
+dim=50
 no_of_run=15
 bfs=[]
 dfs=[]
@@ -30,6 +27,44 @@ sumEuclid=0
 countEuclid=0
 sumMann=0
 countMann=0
+
+def closedSet():
+    totalBfs=[]
+    totalDfs=[]
+    totalEuclid=[]
+    totalMann=[]
+    totalBidirection=[]
+    closebfs=0
+    closedfs=0
+    closedBiBfs=0
+    closedEuclid=0
+    closedMann=0
+    for p in prob:
+        for k in range(no_of_run):
+            b=helper_24.Maze_helper(dim,p)
+            closebfs+=b.BFS()
+            closedfs+=b.dfs()
+            closedBiBfs+=b.bidirection()
+            closedEuclid+=b.aStarSearch(helper.euclidDistance)
+            closedMann+=b.aStarSearch(helper.manhattanDistance)
+        totalBfs.append(closebfs/no_of_run)
+        totalDfs.append(closedfs/no_of_run)
+        totalBidirection.append(closedBiBfs/no_of_run)
+        totalEuclid.append((closedEuclid/no_of_run))
+        totalMann.append(closedMann/no_of_run)
+
+
+    bfsAvg=sum(totalBfs)/len(totalBfs)
+    dfsAvg=sum(totalDfs)/len(totalDfs)
+    Bidir=sum(totalBidirection)/len(totalBidirection)
+    Eucl=sum(totalEuclid)/len(totalEuclid)
+    Mannt=sum(totalMann)/len(totalMann)
+    print("bfs=" + str(bfsAvg))
+    print("dfs=" + str(dfsAvg))
+    print("bibfs=" + str(Bidir))
+    print("Euclid=" + str(Eucl))
+    print("Manhattan=" + str(Mannt))
+
 for p in prob:
     for k in range(no_of_run):
         a = maze.Maze(dim, p)
@@ -78,11 +113,12 @@ for p in prob:
 # print(bibfs)
 # print(euclid)
 # print(mann)
-plt.plot(prob, bfs,'g')
-plt.plot(prob, dfs,'r')
-plt.plot(prob,bibfs,'b')
-plt.plot(prob,euclid,'y')
-plt.plot(prob,mann,'k')
+closedSet()
+plt.plot(prob, bfs,label='BFS')
+plt.plot(prob, dfs,label='DFS')
+plt.plot(prob,bibfs,label='BIBFS')
+plt.plot(prob,euclid,label='Euclid')
+plt.plot(prob,mann,label='Manhattan')
 plt.ylabel('Average')
 plt.xlabel('Density')
 plt.title('Average vs Density')
