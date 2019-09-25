@@ -171,3 +171,36 @@ class Maze:
 			pathList.append(path[pathList[-1]])
 		pathList.reverse()
 		return pathList
+
+	def hardnessValues(self, distanceFunction):
+		(startx, starty) = (0,0)
+		(endx , endy) = (self.dimension -1, self.dimension-1)
+		path = {}
+		fringe = [(0,(startx,starty, (-1, -1, 0)))]
+		maxFringeLength = 1
+		closedSet = []
+		while (len(fringe) != 0):
+			fringeLength = len(fringe)
+			if (maxFringeLength < fringeLength):
+				maxFringeLength = fringeLength
+			(heuristicValue,(x, y, (parentx,parenty,pathLength))) = heapq.heappop(fringe)
+			if (x,y) not in closedSet:
+				if (x,y) == (endx,endy):
+					path[(x,y)] = (parentx,parenty)
+					return (len(self.getPath(path)),len(closedSet), maxFringeLength)
+				eligibleChildren = self.giveEligibleChild(x,y);
+				for (cx,cy) in eligibleChildren:
+					heuristic = distanceFunction((cx,cy),(endx,endy))+pathLength
+					heapq.heappush(fringe,(heuristic,(cx,cy,(x,y,pathLength+1))))
+				closedSet.append((x,y))
+				path[(x,y)] = (parentx,parenty)
+		return (0,len(closedSet),maxFringeLength)
+
+	def hardnessScore(self, pathLength, exploredNodes, maxFringeLength):
+		if pathLength != 0 :
+			pathScore = float(2*self.dimension-1)/float(pathLength)
+		else:
+			return 0
+		exploredScore = exploredNodes/float(self.dimension*self.dimension)
+		fringeScore = maxFringeLength/float(self.dimension*self.dimension)
+		return (2*pathScore + 3*exploredScore + fringeScore)/6
