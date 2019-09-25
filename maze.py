@@ -190,7 +190,7 @@ class Maze:
 					return (len(self.getPath(path)),len(closedSet), maxFringeLength)
 				eligibleChildren = self.giveEligibleChild(x,y);
 				for (cx,cy) in eligibleChildren:
-					heuristic = distanceFunction((cx,cy),(endx,endy))+pathLength
+					heuristic = distanceFunction(cx,cy,endx,endy)+pathLength
 					heapq.heappush(fringe,(heuristic,(cx,cy,(x,y,pathLength+1))))
 				closedSet.append((x,y))
 				path[(x,y)] = (parentx,parenty)
