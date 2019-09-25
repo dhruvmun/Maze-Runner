@@ -3,17 +3,19 @@ import maze
 
 class Visualize:
 
-	def __init__(self, title, color):
+	def __init__(self, title, color, bx, by):
 		self.turtleObject = turtle.Turtle()
 		self.screenObject = turtle.Screen()
 		self.screenObject.title(title)
 		self.turtleObject.speed(0)
 		self.scale = 15
 		self.pathColor = color
+		self.basex = bx
+		self.basey = by
 
 	def drawSquare(self, x, y, fill):
 		self.turtleObject.up()
-		self.turtleObject.goto(x*self.scale, -y*self.scale)
+		self.turtleObject.goto(self.basex+x*self.scale, self.basey-y*self.scale)
 		self.turtleObject.down()
 		if fill :
 			self.turtleObject.begin_fill()
