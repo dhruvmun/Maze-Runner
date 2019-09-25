@@ -4,15 +4,18 @@ import random
 import heapq
 
 def getChild(maze1, maze2):
-	childMaze = maze.Maze(maze1.dimension, 0)
+	childMaze1 = maze.Maze(maze1.dimension, 0)
+	childMaze2 = maze.Maze(maze1.dimension, 0)
 	for j in range(maze1.dimension):
-		if j <= maze1.dimension/2:
-			parentMaze = maze1
+		if j < maze1.dimension/2:
+			for i in range(maze1.dimension):
+				childMaze1.mazeCells[i][j] = maze1.mazeCells[i][j]
+				childMaze2.mazeCells[i][j] = maze2.mazeCells[i][j]
 		else:
-			parentMaze = maze2
-		for i in range(maze1.dimension):
-			childMaze.mazeCells[i][j] = parentMaze.mazeCells[i][j]
-	return childMaze
+			for i in range(maze1.dimension):
+				childMaze1.mazeCells[i][j] = maze2.mazeCells[i][j]
+				childMaze2.mazeCells[i][j] = maze1.mazeCells[i][j]
+	return [childMaze1, childMaze2]
 
 def mutateChild(childMaze, mutateProbability):
 	for i in range(childMaze.dimension/2):
@@ -39,9 +42,11 @@ def bestBreed(population, k):
 	newPopulation = []
 	for i in range(k):
 		for j in range(i,k):
-			currMaze = mutateChild(getChild(population[i][1], population[j][1]), 0.5)
-			hardness = currMaze.hardnessValues(helper.manhattanDistance)
-			heapq.heappush(newPopulation, (-currMaze.hardnessScore(hardness[0],hardness[1],hardness[2]),currMaze))
+			childMazes = getChild(population[i][1], population[j][1])
+			for childMaze in childMazes:
+				currMaze = mutateChild(childMaze, 0.5)
+				hardness = currMaze.hardnessValues(helper.manhattanDistance)
+				heapq.heappush(newPopulation, (-currMaze.hardnessScore(hardness[0],hardness[1],hardness[2]),currMaze))
 	return [heapq.heappop(newPopulation) for i in range(int(k))]
 
 def beamSearch(dimension, probability, k):
@@ -62,7 +67,3 @@ def beamSearch(dimension, probability, k):
 			if slackCount == maxSlackCount:
 				toContinue = False
 	return heapq.heappop(population)
-
-
-
-
