@@ -5,7 +5,7 @@ import io
 
 class Visualize:
 
-	def __init__(self, title, color, bx, by):
+	def __init__(self, title, color, bx = 0, by = 0):
 		self.turtleObject = turtle.Turtle()
 		self.screenObject = turtle.Screen()
 		self.screenObject.title(title)
@@ -44,3 +44,6 @@ class Visualize:
 		psImage = canvas.postscript(file=fileName+'.ps')
 		pngImage = Image.open(fileName+'.ps')
 		pngImage.save(fileName+'.png', 'png')
+
+	def clearScreen(self):
+		self.turtleObject.clear()
