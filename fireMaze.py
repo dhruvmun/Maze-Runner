@@ -4,11 +4,12 @@ import heapq
 import matplotlib.pyplot as plt
 import random
 
-def giveFireChild(mazeObject, fireset, x, y, q, k):
+def giveFireChild(x, y, q, k):
 	fireProb = 1-pow((1-q),k)
-	if (fireProb>=random.uniform(0, 1)):
-		mazeObject.mazeCells[x][y]=2
-		fireset.append((x,y))
+	if (random.uniform(0, 1) <= fireProb):
+		return True
+	else:
+		return False
 
 
 def expandFire(mazeObject, fireset, q):
@@ -19,8 +20,10 @@ def expandFire(mazeObject, fireset, q):
 				if(k==0):
 					continue
 				else:
-					giveFireChild(mazeObject, fireset, i, j, q, k)
-	return fireset
+					if(giveFireChild(i, j, q, k)):
+						fireset.append((i,j))
+						mazeObject.mazeCells[i][j] = 2
+	return (fireset, mazeObject)
 
 def aStarSearch(mazeObject, distanceFunction, startx,starty, endx , endy):
 	path = {}
@@ -54,7 +57,11 @@ def findPath(p,q):
 
 	while shortestPath != []:
 		next_step = shortestPath.pop(0)
-		expandFire(mazeObject, fireset, q)
+		(fireset, mazeObject) = expandFire(mazeObject, fireset, q)
+		# print fireset
+		# for row in mazeObject.mazeCells:
+		# 	print row
+		# print next_step
 		if next_step in fireset:
 			return 0  #"Dead"
 	return 1  #"Success"
@@ -68,25 +75,27 @@ def plotgraph():
 
 
 p0 = 0.3
-dim = 100
-qs = [0.0,0.1,0.2,0.3,0.4,0.5]
-no_of_maze_per_q = 10
+dim = 10
+# qs = [0.0,0.1,0.2,0.3,0.4,0.5]
+# qs = [0.6]
+qs = []
+for i in range(11):
+	qs.append(float(i)/10)
+no_of_maze_per_q = 50
 avgsuccess = []
 for q in qs:
 	d=0
 	s=0
 	for i in range(no_of_maze_per_q):	
 		a = findPath(0.2,q)
-		print ("q: "+str(q) + " i: " + str(i) + " a: "+ str(1))
+		# print ("q: "+str(q) + " i: " + str(i) + " a: "+ str(a))
 		if a==0:
 			d+=1
 		elif a==1:
 			s+=1
-	avgsuccess.append(float(s/(s+d)))
+	print ("<<<<<<<<<<<<< "+ str(s) + "/" + str(s+d))
+	avgsuccess.append(float(s)/(s+d))
 
+# x = raw_input()
 plotgraph()
-p0 = 0.2
-dim = 20
-a = findPath(0.2,0.2)
-print (a)
 
