@@ -1,12 +1,14 @@
 import maze
 import helper
 import random
+import fireMaze
 
-def giveFireChild(mazeObject, fireset, x, y, q, k):
+def giveFireChild(x, y, q, k):
 	fireProb = 1-pow((1-q),k)
-	if (fireProb>=random.uniform(0, 1)):
-		mazeObject.mazeCells[x][y]=2
-		fireset.append((x,y))
+	if (random.uniform(0, 1) <= fireProb):
+		return True
+	else:
+		return False
 
 
 def expandFire(mazeObject, fireset, q):
@@ -17,8 +19,10 @@ def expandFire(mazeObject, fireset, q):
 				if(k==0):
 					continue
 				else:
-					giveFireChild(mazeObject, fireset, i, j, q, k)
-	return fireset
+					if(giveFireChild(i, j, q, k)):
+						fireset.append((i,j))
+						mazeObject.mazeCells[i][j] = 2
+	return (fireset, mazeObject)
 
 
 def heuristic(a,b):
@@ -39,9 +43,9 @@ def heuristic(a,b):
 		# 	mazeObject.mazeCells[x][y] = 2
 		# 	fireset.append((x, y))
 fringe=[(0,0)]
-list=[]
+listObject=[]
 closed=[]
-def minmax(child,player):
+def minmax(m1, child,player,fireset):
 	if child==m1.mazeCells[m1.dimension-1][m1.dimension-1]:
 		print("Goal State reached by Man")
 		return True
@@ -67,27 +71,39 @@ def minmax(child,player):
 					fringe.append((p,q))
 					# print("List")
 					# print(listObject)
-					minmax((p, q), False)
+					minmax(m1, (p, q), False,fireset)
 
 
 
 	else:
-		firePos=expandFire(m1, fireset, 0.2)
-		print(firePos)
-		if firePos[-1]==child or firePos[-1]==m1.mazeCells[m1.dimension - 1][m1.dimension - 1]:
+		(fireset,m1)=expandFire(m1,fireset, 0.2)
+		print("Fire")
+		print(fireset)
+		if fireset[-1]==child or fireset[-1]==m1.mazeCells[m1.dimension - 1][m1.dimension - 1]:
 				Print("Dead")
 				return False
 		else:
-			minmax(child,True)
+			minmax(m1,child,True,fireset)
 
-p = 0.2
-dim = 20
-# a = findPath(0.2,0.2)
-# print (a)
-m1=maze.Maze(dim,p)
-m1.mazeCells[0][dim-1] = 2
-fireset = [(0,dim-1)]
+def generateFireMaze(dim, p):
+	shortestPath_fire = []
+	shortestPath = []
+	while (shortestPath_fire == [] or shortestPath == []):
+		mazeObject = maze.Maze(dim, p)
+		shortestPath_fire = fireMaze.aStarSearch(mazeObject, helper.manhattanDistance, 0, dim - 1, dim - 1, 0)
+		shortestPath = fireMaze.aStarSearch(mazeObject, helper.manhattanDistance, 0, 0, dim - 1, dim - 1)
+
+	mazeObject.mazeCells[0][dim - 1] = 2
+	fireset = [(0, dim - 1)]
+	return (fireset, mazeObject)
+
+p = 0.3
+dim = 5
+
+(fireset,m1) = generateFireMaze(dim,p)
 # goal=[]
 (x,y)=(0,0)
-(e,f)=(0,m1.dimension-1)
-print(minmax((x,y),True))
+# (e,f)=(0,m1.dimension-1)
+for i in range(m1.dimension-1):
+	print(m1.mazeCells[i])
+print(minmax(m1,(x,y),True,fireset))

@@ -74,28 +74,26 @@ def plotgraph():
 	plt.show()
 
 
-p0 = 0.3
-dim = 10
-# qs = [0.0,0.1,0.2,0.3,0.4,0.5]
-# qs = [0.6]
-qs = []
-for i in range(11):
-	qs.append(float(i)/10)
-no_of_maze_per_q = 50
-avgsuccess = []
-for q in qs:
-	d=0
-	s=0
-	for i in range(no_of_maze_per_q):	
-		a = findPath(0.2,q)
-		# print ("q: "+str(q) + " i: " + str(i) + " a: "+ str(a))
-		if a==0:
-			d+=1
-		elif a==1:
-			s+=1
-	print ("<<<<<<<<<<<<< "+ str(s) + "/" + str(s+d))
-	avgsuccess.append(float(s)/(s+d))
-
-# x = raw_input()
-plotgraph()
+# p0 = 0.3
+# dim = 10
+# qs = []
+# for i in range(11):
+# 	qs.append(float(i)/10)
+# no_of_maze_per_q = 50
+# avgsuccess = []
+# for q in qs:
+# 	d=0
+# 	s=0
+# 	for i in range(no_of_maze_per_q):
+# 		a = findPath(0.2,q)
+# 		# print ("q: "+str(q) + " i: " + str(i) + " a: "+ str(a))
+# 		if a==0:
+# 			d+=1
+# 		elif a==1:
+# 			s+=1
+# 	print ("<<<<<<<<<<<<< "+ str(s) + "/" + str(s+d))
+# 	avgsuccess.append(float(s)/(s+d))
+#
+# # x = raw_input()
+# plotgraph()
 
