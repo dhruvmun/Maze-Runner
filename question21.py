@@ -12,9 +12,9 @@ def avgTime(iterations, timeLimit, dimension, probability):
 			path =  mazeObject.aStarSearch(helper.euclidDistance)
 			endTime = time.time()
 			timeTaken += endTime - startTime
-			print str(dimension) + "," + str(probability) + " , " + str(timeTaken) + "," + str(len(path))
+			print (str(dimension) + "," + str(probability) + " , " + str(timeTaken) + "," + str(len(path)))
 		timeTaken /= iterations
-		print "Average time : " + str(dimension) + "," + str(probability) + " , " + str(timeTaken)
+		print ("Average time : " + str(dimension) + "," + str(probability) + " , " + str(timeTaken))
 		dimension += 10
 
 dimension = 100
