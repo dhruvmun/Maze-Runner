@@ -59,7 +59,7 @@ class Maze:
 		return (max_fringe_len, len(closedSet))
 
 
-p = 0.4 #[0.2, 0.3, 0.4, 0.5]
+p = 0.3 #[0.2, 0.3, 0.4, 0.5]
 dim = 100
 no_of_maze_per_prob = 10
 total_max_fringe1 = []

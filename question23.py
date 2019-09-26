@@ -3,10 +3,10 @@ import helper
 import matplotlib.pyplot as plt
 
 prob = [0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5]
-dim = 100
+dim = 50
 
 solvability = []
-no_of_maze_per_prob = 50
+no_of_maze_per_prob = 100
 
 def probability_threshold():
 	for p in  prob:
