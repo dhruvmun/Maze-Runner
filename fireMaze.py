@@ -2,8 +2,9 @@ import maze
 import helper
 import heapq
 import matplotlib.pyplot as plt
+import random
 
-def giveFireChild(mazeObject, fireset, x, y, q, p0):
+def giveFireChild(mazeObject, fireset, x, y, q):
 	k = 0
 	if(x-1>=0 and mazeObject.mazeCells[x-1][y]==2):	#Blocked cell cannot catch fire
 		k+=1
@@ -14,7 +15,7 @@ def giveFireChild(mazeObject, fireset, x, y, q, p0):
 	if(y+1<=dim-1 and mazeObject.mazeCells[x][y+1]==2):
 		k+=1
 	fireProb = 1-pow((1-q),k)
-	if(fireProb>=p0):
+	if (fireProb>=random.uniform(0, 1)):
 		mazeObject.mazeCells[x][y]=2
 		fireset.append((x,y))
 
@@ -25,13 +26,13 @@ def Fire(mazeObject, fireset, q):
 		(x,y) = fireset[i]
 
 		if(x-1>=0 and mazeObject.mazeCells[x-1][y]==0):	#Blocked cell cannot catch fire
-			giveFireChild(mazeObject, fireset,x-1,y,q,p0)
+			giveFireChild(mazeObject, fireset,x-1,y,q)
 		if(x+1<=dim-1 and mazeObject.mazeCells[x+1][y]==0):
-			giveFireChild(mazeObject, fireset,x+1,y,q,p0)
+			giveFireChild(mazeObject, fireset,x+1,y,q)
 		if(y-1>=0 and mazeObject.mazeCells[x][y-1]==0):
-			giveFireChild(mazeObject, fireset,x,y-1,q,p0)
+			giveFireChild(mazeObject, fireset,x,y-1,q)
 		if(y+1<=dim-1 and mazeObject.mazeCells[x][y+1]==0):
-			giveFireChild(mazeObject, fireset,x,y+1,q,p0)
+			giveFireChild(mazeObject, fireset,x,y+1,q)
 
 def aStarSearch(mazeObject, distanceFunction, startx,starty, endx , endy):
 	path = {}
@@ -51,8 +52,7 @@ def aStarSearch(mazeObject, distanceFunction, startx,starty, endx , endy):
 			path[(x,y)] = (parentx,parenty)
 	return []
 
-
-def findPath(p, q):
+def findPath():
 	# 0->Open, 1->Block, 2->fire
 	mazeObject = maze.Maze(dim, p)
 	mazeObject.mazeCells[0][dim-1] = 2
@@ -100,4 +100,3 @@ p0 = 0.2
 dim = 20
 a = findPath(0.2,0.2)
 print (a)
-
