@@ -2,6 +2,7 @@ import turtle
 import maze
 from PIL import Image
 import io
+import os
 
 class Visualize:
 
@@ -44,6 +45,7 @@ class Visualize:
 		psImage = canvas.postscript(file=fileName+'.ps')
 		pngImage = Image.open(fileName+'.ps')
 		pngImage.save(fileName+'.png', 'png')
+		os.remove(fileName+'.ps')
 
 	def clearScreen(self):
 		self.turtleObject.clear()
