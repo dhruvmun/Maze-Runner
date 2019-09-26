@@ -1,5 +1,6 @@
 import maze
 import helper
+import matplotlib.pyplot as plt
 
 def giveFireChild(mazeObject, fireset, x, y, q, p0):
 	k = 0
@@ -23,11 +24,11 @@ def Fire(mazeObject, fireset, q):
 		if(x-1>=0 and mazeObject.mazeCells[x-1][y]==0):	#Blocked cell cannot catch fire
 			giveFireChild(mazeObject, fireset,x-1,y,q,p0)
 		if(x+1<=dim-1 and mazeObject.mazeCells[x+1][y]==0):
-			giveFireChild(mazeObject, fireset,x-1,y,q,p0)
+			giveFireChild(mazeObject, fireset,x+1,y,q,p0)
 		if(y-1>=0 and mazeObject.mazeCells[x][y-1]==0):
-			giveFireChild(mazeObject, fireset,x-1,y,q,p0)
+			giveFireChild(mazeObject, fireset,x,y-1,q,p0)
 		if(y+1<=dim-1 and mazeObject.mazeCells[x][y+1]==0):
-			giveFireChild(mazeObject, fireset,x-1,y,q,p0)
+			giveFireChild(mazeObject, fireset,x,y+1,q,p0)
 		
 
 def findPath(p, q):
@@ -38,15 +39,35 @@ def findPath(p, q):
 
 	shortestPath = mazeObject.aStarSearch(helper.euclidDistance)
 	if shortestPath == []:
-		return "No Path Exist"
+		return -1  #"No Path Exist"
 	while shortestPath != []:
 		next_step = shortestPath.pop(0)
 		Fire(mazeObject, fireset, q)
 		if next_step in fireset:
-			return "Dead"
-	return "Success"
+			return 0  #"Dead"
+	return 1  #"Success"
 
-p0 = 0.2
-dim = 20
-a = findPath(0.2,0.5)
-print a
+def plotgraph():
+	plt.plot(qs, avgsuccess)
+	plt.xlabel('flamability')
+	plt.ylabel('avg Success')
+	plt.title('flamability vs success')
+	plt.show()
+
+
+p0 = 0.3
+dim = 100
+qs = [0.0,0.1,0.2,0.3,0.4,0.5]
+no_of_maze_per_q = 10
+avgsuccess = []
+for q in qs:
+	d=0
+	s=0
+	for i in range(no_of_maze_per_q):	
+		a = findPath(0.2,q)
+		print a
+		if a==1:
+			s+=1
+	avgsuccess.append(float(s/(no_of_maze_per_q)))
+
+plotgraph()
