@@ -61,7 +61,7 @@ class Maze:
 					# return path if neighbour is goal
 					if (childx, childy) == (self.dimension-1,self.dimension-1):  #If child is goal return the new list
 						path[(childx,childy)] = (x,y)
-						return self.getPath(path)
+						return self.getPath(path, childx, childy)
 				closedSet.append((x,y))						#Mark last node of element dequeued as Visited
 
 		# print(recent_Path)
@@ -78,7 +78,7 @@ class Maze:
 			if (x,y) not in closedSet:
 				if (x,y) == (endx,endy):
 					path[(x,y)] = (parentx,parenty)
-					return (self.getPath(path), closedSet);
+					return (self.getPath(path, endx, endy), closedSet);
 				eligibleChildren = self.giveEligibleChild(x,y);
 				for (cx,cy) in eligibleChildren:
 					fringe.append((cx,cy,(x,y)))
@@ -132,7 +132,7 @@ class Maze:
 
 				if (current_state == goal_state):
 					path[current_state] = (parentx, parenty)
-					return self.getPath(path)
+					return self.getPath(path, goal_state[0], goal_state[1])
 
 				children = self.giveEligibleChild(x,y)
 				#print(children)
@@ -155,7 +155,7 @@ class Maze:
 			if (x,y) not in closedSet:
 				if (x,y) == (endx,endy):
 					path[(x,y)] = (parentx,parenty)
-					return self.getPath(path)
+					return self.getPath(path, endx, endy)
 				eligibleChildren = self.giveEligibleChild(x,y);
 				for (cx,cy) in eligibleChildren:
 					heuristic = distanceFunction(cx,cy,endx,endy)+pathLength
@@ -165,8 +165,8 @@ class Maze:
 		return [];
 
 
-	def getPath(self, path):
-		pathList = [(self.dimension-1,self.dimension-1)]
+	def getPath(self, path, endx, endy):
+		pathList = [(endx, endy)]
 		while path[pathList[-1]]!=(-1,-1):
 			pathList.append(path[pathList[-1]])
 		pathList.reverse()
@@ -187,7 +187,7 @@ class Maze:
 			if (x,y) not in closedSet:
 				if (x,y) == (endx,endy):
 					path[(x,y)] = (parentx,parenty)
-					return (len(self.getPath(path)),len(closedSet), maxFringeLength)
+					return (len(self.getPath(path, endx, endy)),len(closedSet), maxFringeLength)
 				eligibleChildren = self.giveEligibleChild(x,y);
 				for (cx,cy) in eligibleChildren:
 					heuristic = distanceFunction(cx,cy,endx,endy)+pathLength

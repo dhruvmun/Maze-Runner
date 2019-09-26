@@ -3,8 +3,6 @@ import helper
 import heapq
 import matplotlib.pyplot as plt
 import random
-import heapq
-import matplotlib.pyplot as plt
 
 def giveFireChild(mazeObject, fireset, x, y, q, k):
 	fireProb = 1-pow((1-q),k)
@@ -33,7 +31,7 @@ def aStarSearch(mazeObject, distanceFunction, startx,starty, endx , endy):
 		if (x,y) not in closedSet:
 			if (x,y) == (endx,endy):
 				path[(x,y)] = (parentx,parenty)
-				return mazeObject.getPath(path)
+				return mazeObject.getPath(path, endx, endy)
 			eligibleChildren = mazeObject.giveEligibleChild(x,y);
 			for (cx,cy) in eligibleChildren:
 				heuristic = distanceFunction(cx,cy,endx,endy)+pathLength
@@ -42,7 +40,7 @@ def aStarSearch(mazeObject, distanceFunction, startx,starty, endx , endy):
 			path[(x,y)] = (parentx,parenty)
 	return []
 
-def findPath():
+def findPath(p,q):
 	# 0->Open, 1->Block, 2->fire
 	shortestPath_fire = []
 	shortestPath = []
@@ -79,6 +77,7 @@ for q in qs:
 	s=0
 	for i in range(no_of_maze_per_q):	
 		a = findPath(0.2,q)
+		print ("q: "+str(q) + " i: " + str(i) + " a: "+ str(1))
 		if a==0:
 			d+=1
 		elif a==1:
