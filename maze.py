@@ -204,3 +204,15 @@ class Maze:
 		exploredScore = exploredNodes/float(self.dimension*self.dimension)
 		fringeScore = maxFringeLength/float(self.dimension*self.dimension)
 		return (2*pathScore + 3*exploredScore + fringeScore)/6
+
+	def giveFireNeighbours(self, x, y):
+		k = 0
+		if(x-1>=0 and self.mazeCells[x-1][y]==2):	#Blocked cell cannot catch fire
+			k+=1
+		if(x+1<=self.dimension-1 and self.mazeCells[x+1][y]==2):
+			k+=1
+		if(y-1>=0 and self.mazeCells[x][y-1]==2):
+			k+=1
+		if(y+1<=self.dimension-1 and self.mazeCells[x][y+1]==2):
+			k+=1
+		return k

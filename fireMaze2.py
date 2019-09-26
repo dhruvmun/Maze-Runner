@@ -2,35 +2,22 @@ import maze
 import helper
 import random
 
-def giveFireChild(mazeObject, fireset, x, y, q):
-	k = 0
-	if(x-1>=0 and mazeObject.mazeCells[x-1][y]==2):	#Blocked cell cannot catch fire
-		k+=1
-	if(x+1<=dim-1 and mazeObject.mazeCells[x+1][y]==2):
-		k+=1
-	if(y-1>=0 and mazeObject.mazeCells[x][y-1]==2):
-		k+=1
-	if(y+1<=dim-1 and mazeObject.mazeCells[x][y+1]==2):
-		k+=1
+def giveFireChild(mazeObject, fireset, x, y, q, k):
 	fireProb = 1-pow((1-q),k)
 	if (fireProb>=random.uniform(0, 1)):
 		mazeObject.mazeCells[x][y]=2
 		fireset.append((x,y))
 
 
-def Fire(mazeObject, fireset, q):
-	l = len(fireset)
-	for i in range(l):
-		(x,y) = fireset[i]
-
-		if(x-1>=0 and mazeObject.mazeCells[x-1][y]==0):	#Blocked cell cannot catch fire
-			giveFireChild(mazeObject, fireset,x-1,y,q)
-		if(x+1<=dim-1 and mazeObject.mazeCells[x+1][y]==0):
-			giveFireChild(mazeObject, fireset,x+1,y,q)
-		if(y-1>=0 and mazeObject.mazeCells[x][y-1]==0):
-			giveFireChild(mazeObject, fireset,x,y-1,q)
-		if(y+1<=dim-1 and mazeObject.mazeCells[x][y+1]==0):
-			giveFireChild(mazeObject, fireset,x,y+1,q)
+def expandFire(mazeObject, fireset, q):
+	for i in range(mazeObject.dimension):
+		for j in range(mazeObject.dimension):
+			if(mazeObject.mazeCells[i][j] == 0):
+				k = mazeObject.giveFireNeighbours(i,j)
+				if(k==0):
+					continue
+				else
+					giveFireChild(mazeObject, fireset, i, j, q, k)
 		
 
 def findPath():
@@ -67,7 +54,7 @@ def heuristic(a,b):
 		# 	mazeObject.mazeCells[x][y] = 2
 		# 	fireset.append((x, y))
 fringe=[(0,0)]
-list=[]
+listObject=[]
 closed=[]
 def minimax(child,player):
 	(x,y)=child
@@ -84,16 +71,16 @@ def minimax(child,player):
 			if child not in fringe:
 				(a,b)=child
 				closed.append(child)
-				list.append(heuristic(a,b))
-		max1=list.index(max(list))
-		print(list,max1)
+				listObject.append(heuristic(a,b))
+		max1=listObject.index(max(listObject))
+		print(listObject,max1)
 		if max1+1:
 			p,q=children[max1]
 			fringe.append((p,q))
 			print("List")
-			print(list)
+			print(listObject)
 			minimax((p, q), False)
-			list.clear()
+			listObject.clear()
 
 
 	else:
