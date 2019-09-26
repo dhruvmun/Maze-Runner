@@ -20,6 +20,7 @@ def expandFire(mazeObject, fireset, q):
 					giveFireChild(mazeObject, fireset, i, j, q, k)
 	return fireset
 
+
 def heuristic(a,b):
 		x=a
 		y=b
@@ -38,7 +39,7 @@ def heuristic(a,b):
 		# 	mazeObject.mazeCells[x][y] = 2
 		# 	fireset.append((x, y))
 fringe=[(0,0)]
-listObject=[]
+list=[]
 closed=[]
 def minmax(child,player):
 	if child==m1.mazeCells[m1.dimension-1][m1.dimension-1]:
@@ -67,6 +68,7 @@ def minmax(child,player):
 					# print("List")
 					# print(list)
 					minmax((p, q), False)
+
 
 
 	else:
