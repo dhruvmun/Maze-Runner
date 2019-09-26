@@ -13,10 +13,13 @@ def giveFireChild(x, y, q, k):
 
 
 def expandFire(mazeObject, fireset, q):
+	oldMazeObject = mazeObject
+	mazeObject = maze.Maze(oldMazeObject.dimension, oldMazeObject.probability)
 	for i in range(mazeObject.dimension):
 		for j in range(mazeObject.dimension):
+			mazeObject.mazeCells[i][j] = oldMazeObject.mazeCells[i][j]
 			if(mazeObject.mazeCells[i][j] == 0):
-				k = mazeObject.giveFireNeighbours(i,j)
+				k = oldMazeObject.giveFireNeighbours(i,j)
 				if(k==0):
 					continue
 				else:
