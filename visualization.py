@@ -31,8 +31,8 @@ class Visualize:
 			for column in range(mazeObject.dimension):
 				self.drawSquare(column, row, mazeObject.mazeCells[row][column] == 1)
 
-	def drawPath(self, path):
-		self.turtleObject.fillcolor(self.pathColor)
+	def drawPath(self, path, color = 'yellow'):
+		self.turtleObject.fillcolor(color)
 		for (row, column) in path:
 			self.drawSquare(column, row, True)
 		self.turtleObject.ht()

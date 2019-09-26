@@ -78,13 +78,13 @@ class Maze:
 			if (x,y) not in closedSet:
 				if (x,y) == (endx,endy):
 					path[(x,y)] = (parentx,parenty)
-					return self.getPath(path);
+					return (self.getPath(path), closedSet);
 				eligibleChildren = self.giveEligibleChild(x,y);
 				for (cx,cy) in eligibleChildren:
 					fringe.append((cx,cy,(x,y)))
 				closedSet.append((x,y))
 				path[(x,y)] = (parentx,parenty)
-		return [];
+		return ([], closedSet);
 
 	def bidirection(self):
 		fringe1 = [[(0, 0)]]

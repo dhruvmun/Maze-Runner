@@ -45,18 +45,3 @@ def temp2():
 # print path
 # visualization.drawPath(path, t, scale, 'yellow')
 # p = raw_input()
-
-
-# hard = hardMaze.beamSearch(20,0.35,5, hardMaze.aStarWithDistanceFunction, hardMaze.manhattanDistanceWithMaximalNodes)
-
-# visualise = visualization.Visualize("DFS", 'yellow', 0, 0)
-# print "Score:" + str(-hard[0])
-# visualise.drawMaze(hard[1])
-# x = raw_input()
-
-hard2 = hardMaze.beamSearch(20,0.35,5, hardMaze.dfsWithMaxFringe, hardMaze.dfsWithMaxFringeLength)
-
-visualise = visualization.Visualize("BFS", 'yellow', 0, 320)
-visualise.drawMaze(hard2[1])
-print "Score:" + str(-hard2[0])
-x = raw_input()
