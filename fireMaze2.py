@@ -16,25 +16,9 @@ def expandFire(mazeObject, fireset, q):
 				k = mazeObject.giveFireNeighbours(i,j)
 				if(k==0):
 					continue
-				else
+				else:
 					giveFireChild(mazeObject, fireset, i, j, q, k)
-		
-
-def findPath():
-	# 0->Open, 1->Block, 2->fire
-	# mazeObject = maze.Maze(dim, p)
-
-	# shortestPath = mazeObject.aStarSearch(helper.euclidDistance)
-	# if shortestPath == []:
-	# 	return "No Path Exist"
-	# while shortestPath != []:
-	# 	next_step = shortestPath.pop(0)
-	Fire(m1, fireset, 0.2)
-		# if next_step in fireset:
-		# 	return "Dead"
-	# return "Success"
-
-
+	return fireset
 
 def heuristic(a,b):
 		x=a
@@ -56,40 +40,43 @@ def heuristic(a,b):
 fringe=[(0,0)]
 listObject=[]
 closed=[]
-def minimax(child,player):
-	(x,y)=child
+def minmax(child,player):
 	if child==m1.mazeCells[m1.dimension-1][m1.dimension-1]:
-		print("Success")
-		return False if player else True
+		print("Goal State reached by Man")
+		return True
 
 	if player:
-		# value=100
-		children=m1.giveEligibleChild(x,y)
-		print("Children")
-		print(children)
-		for child in children:
-			if child not in fringe:
-				(a,b)=child
-				closed.append(child)
-				listObject.append(heuristic(a,b))
-		max1=listObject.index(max(listObject))
-		print(listObject,max1)
-		if max1+1:
-			p,q=children[max1]
-			fringe.append((p,q))
-			print("List")
-			print(listObject)
-			minimax((p, q), False)
-			listObject.clear()
+		while fringe:
+			(x,y)=fringe.pop()
+			if (x,y) not in closed and (x,y) not in fireset:
+				if (x,y)==(m1.dimension-1,m1.dimension-1):
+					return True
+				children=m1.giveEligibleChild(x,y)
+				print("Children")
+				print(children)
+				list.clear()
+				for child in children:
+					(a,b)=child
+					list.append(heuristic(a,b))
+				closed.append((x,y))
+				max1=list.index(max(list))
+				print(list,max1)
+				if max1+1:
+					p,q=children[max1]
+					fringe.append((p,q))
+					# print("List")
+					# print(list)
+					minmax((p, q), False)
 
 
 	else:
-		if (e,y)==(m1.dimension-1,0):
-			print("Dead")
-			return False
+		firePos=expandFire(m1, fireset, 0.2)
+		print(firePos)
+		if firePos[-1]==child or firePos[-1]==m1.mazeCells[m1.dimension - 1][m1.dimension - 1]:
+				Print("Dead")
+				return False
 		else:
-			findPath()
-			minimax(child,True)
+			minmax(child,True)
 
 p = 0.2
 dim = 20
@@ -101,4 +88,4 @@ fireset = [(0,dim-1)]
 # goal=[]
 (x,y)=(0,0)
 (e,f)=(0,m1.dimension-1)
-print(minimax((x,y),True))
+print(minmax((x,y),True))
