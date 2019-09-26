@@ -6,53 +6,23 @@ import random
 import heapq
 import matplotlib.pyplot as plt
 
-def giveFireChild(mazeObject, fireset, x, y, q):
-	k = 0
-	if(x-1>=0 and mazeObject.mazeCells[x-1][y]==2):	#Blocked cell cannot catch fire
-		k+=1
-	if(x+1<=dim-1 and mazeObject.mazeCells[x+1][y]==2):
-		k+=1
-	if(y-1>=0 and mazeObject.mazeCells[x][y-1]==2):
-		k+=1
-	if(y+1<=dim-1 and mazeObject.mazeCells[x][y+1]==2):
-		k+=1
+def giveFireChild(mazeObject, fireset, x, y, q, k):
 	fireProb = 1-pow((1-q),k)
 	if (fireProb>=random.uniform(0, 1)):
 		mazeObject.mazeCells[x][y]=2
 		fireset.append((x,y))
 
 
-def Fire(mazeObject, fireset, q):
-	l = len(fireset)
-	for i in range(l):
-		(x,y) = fireset[i]
-
-		if(x-1>=0 and mazeObject.mazeCells[x-1][y]==0):	#Blocked cell cannot catch fire
-			giveFireChild(mazeObject, fireset,x-1,y,q)
-		if(x+1<=dim-1 and mazeObject.mazeCells[x+1][y]==0):
-			giveFireChild(mazeObject, fireset,x+1,y,q)
-		if(y-1>=0 and mazeObject.mazeCells[x][y-1]==0):
-			giveFireChild(mazeObject, fireset,x,y-1,q)
-		if(y+1<=dim-1 and mazeObject.mazeCells[x][y+1]==0):
-			giveFireChild(mazeObject, fireset,x,y+1,q)
-
-def aStarSearch(mazeObject, distanceFunction, startx,starty, endx , endy):
-	path = {}
-	fringe = [(0,(startx,starty, (-1, -1, 0)))]
-	closedSet = []
-	while (len(fringe) != 0):
-		(heuristicValue,(x, y, (parentx,parenty,pathLength))) = heapq.heappop(fringe)
-		if (x,y) not in closedSet:
-			if (x,y) == (endx,endy):
-				path[(x,y)] = (parentx,parenty)
-				return mazeObject.getPath(path)
-			eligibleChildren = mazeObject.giveEligibleChild(x,y);
-			for (cx,cy) in eligibleChildren:
-				heuristic = distanceFunction(cx,cy,endx,endy)+pathLength
-				heapq.heappush(fringe,(heuristic,(cx,cy,(x,y,pathLength+1))))
-			closedSet.append((x,y))
-			path[(x,y)] = (parentx,parenty)
-	return []
+def expandFire(mazeObject, fireset, q):
+	for i in range(mazeObject.dimension):
+		for j in range(mazeObject.dimension):
+			if(mazeObject.mazeCells[i][j] == 0):
+				k = mazeObject.giveFireNeighbours(i,j)
+				if(k==0):
+					continue
+				else:
+					giveFireChild(mazeObject, fireset, i, j, q, k)
+	return fireset
 
 def aStarSearch(mazeObject, distanceFunction, startx,starty, endx , endy):
 	path = {}
@@ -74,19 +44,19 @@ def aStarSearch(mazeObject, distanceFunction, startx,starty, endx , endy):
 
 def findPath():
 	# 0->Open, 1->Block, 2->fire
-	mazeObject = maze.Maze(dim, p)
-	mazeObject.mazeCells[0][dim-1] = 2
-	fireset = [(0,dim-1)]
-
 	shortestPath_fire = []
 	shortestPath = []
-	while shortestPath_fire == [] || shortestPath == []:
+	while (shortestPath_fire == [] or shortestPath == []):
+		mazeObject = maze.Maze(dim, p)
 		shortestPath_fire = aStarSearch(mazeObject, helper.manhattanDistance, 0,dim-1, dim-1,0)
 		shortestPath = aStarSearch(mazeObject, helper.manhattanDistance, 0,0, dim-1,dim-1)
 
+	mazeObject.mazeCells[0][dim-1] = 2
+	fireset = [(0,dim-1)]
+
 	while shortestPath != []:
 		next_step = shortestPath.pop(0)
-		Fire(mazeObject, fireset, q)
+		expandFire(mazeObject, fireset, q)
 		if next_step in fireset:
 			return 0  #"Dead"
 	return 1  #"Success"

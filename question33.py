@@ -11,13 +11,15 @@ import hardMaze
 # visualise.drawMaze(hard[1])
 # x = raw_input()
 
-dfsWFringe = hardMaze.beamSearch(20,0.35,5, hardMaze.dfsWithMaxFringe, hardMaze.dfsWithMaxFringeLength)
+dfsWFringe = hardMaze.beamSearch(5,0.35,5, hardMaze.dfsWithMaxFringe, hardMaze.dfsWithMaxFringeLength)
 
-visualise = visualization.Visualize("BFS", 'yellow', 0, 320)
+visualise = visualization.Visualize("BFS", 'yellow', -160, -160)
 visualise.drawMaze(dfsWFringe[1])
 (path, closedSet) = dfsWFringe[1].treeSearch()
 visualise.drawPath(path)
+visualise.exportPng("path")
 color = 'red'
 visualise.drawPath(closedSet, color)
+visualise.exportPng("exploredNodes")
 print "Score:" + str(-dfsWFringe[0])
 x = raw_input()

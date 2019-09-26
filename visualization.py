@@ -1,9 +1,12 @@
 import turtle
 import maze
+from PIL import Image
+import io
+import os
 
 class Visualize:
 
-	def __init__(self, title, color, bx, by):
+	def __init__(self, title, color, bx = 0, by = 0):
 		self.turtleObject = turtle.Turtle()
 		self.screenObject = turtle.Screen()
 		self.screenObject.title(title)
@@ -37,3 +40,12 @@ class Visualize:
 			self.drawSquare(column, row, True)
 		self.turtleObject.ht()
 			
+	def exportPng(self, fileName):
+		canvas = self.turtleObject.getscreen().getcanvas()
+		psImage = canvas.postscript(file=fileName+'.ps')
+		pngImage = Image.open(fileName+'.ps')
+		pngImage.save(fileName+'.png', 'png')
+		os.remove(fileName+'.ps')
+
+	def clearScreen(self):
+		self.turtleObject.clear()
