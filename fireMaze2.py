@@ -54,18 +54,18 @@ def minmax(child,player):
 				children=m1.giveEligibleChild(x,y)
 				print("Children")
 				print(children)
-				list.clear()
+				listObject.clear()
 				for child in children:
 					(a,b)=child
-					list.append(heuristic(a,b))
+					listObject.append(heuristic(a,b))
 				closed.append((x,y))
-				max1=list.index(max(list))
-				print(list,max1)
+				max1=listObject.index(max(listObject))
+				print(listObject,max1)
 				if max1+1:
 					p,q=children[max1]
 					fringe.append((p,q))
 					# print("List")
-					# print(list)
+					# print(listObject)
 					minmax((p, q), False)
 
 
