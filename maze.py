@@ -216,3 +216,23 @@ class Maze:
 		if(y+1<=self.dimension-1 and self.mazeCells[x][y+1]==2):
 			k+=1
 		return k
+
+	def giveUnclosedChild(self, x, y,closed):
+		children=[]
+		reqChild=[]
+		if x-1 >= 0:
+			if self.mazeCells[x-1][y]==0:
+				children.append((x-1,y))
+		if x+1<=self.dimension-1:
+			if self.mazeCells[x+1][y]==0:
+				children.append((x+1,y))
+		if y-1>=0:
+			if self.mazeCells[x][y-1]==0:
+				children.append((x,y-1))
+		if y+1<=self.dimension-1:
+			if self.mazeCells[x][y+1]==0:
+				children.append((x,y+1))
+		for child in children:
+			if child not in closed:
+				reqChild.append(child)
+		return reqChild
