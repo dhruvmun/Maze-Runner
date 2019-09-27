@@ -13,10 +13,13 @@ def giveFireChild(x, y, q, k):
 
 
 def expandFire(mazeObject, fireset, q):
+	oldMazeObject = mazeObject
+	mazeObject = maze.Maze(oldMazeObject.dimension, oldMazeObject.probability)
 	for i in range(mazeObject.dimension):
 		for j in range(mazeObject.dimension):
+			mazeObject.mazeCells[i][j] = oldMazeObject.mazeCells[i][j]
 			if(mazeObject.mazeCells[i][j] == 0):
-				k = mazeObject.giveFireNeighbours(i,j)
+				k = oldMazeObject.giveFireNeighbours(i,j)
 				if(k==0):
 					continue
 				else:
@@ -74,26 +77,27 @@ def plotgraph():
 	plt.show()
 
 
-# p0 = 0.3
-# dim = 10
-# qs = []
-# for i in range(11):
-# 	qs.append(float(i)/10)
-# no_of_maze_per_q = 50
-# avgsuccess = []
-# for q in qs:
-# 	d=0
-# 	s=0
-# 	for i in range(no_of_maze_per_q):
-# 		a = findPath(0.2,q)
-# 		# print ("q: "+str(q) + " i: " + str(i) + " a: "+ str(a))
-# 		if a==0:
-# 			d+=1
-# 		elif a==1:
-# 			s+=1
-# 	print ("<<<<<<<<<<<<< "+ str(s) + "/" + str(s+d))
-# 	avgsuccess.append(float(s)/(s+d))
-#
-# # x = raw_input()
-# plotgraph()
+ p0 = 0.3
+ dim = 10
+ qs = []
+ for i in range(11):
+ 	qs.append(float(i)/10)
+ no_of_maze_per_q = 50
+ avgsuccess = []
+ for q in qs:
+ 	d=0
+ 	s=0
+ 	for i in range(no_of_maze_per_q):
+ 		a = findPath(0.2,q)
+ 		# print ("q: "+str(q) + " i: " + str(i) + " a: "+ str(a))
+ 		if a==0:
+ 			d+=1
+ 		elif a==1:
+ 			s+=1
+ 	print ("<<<<<<<<<<<<< "+ str(s) + "/" + str(s+d))
+ 	avgsuccess.append(float(s)/(s+d))
+
+ # x = raw_input()
+ plotgraph()
+
 

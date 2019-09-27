@@ -1,12 +1,14 @@
-import random;
-import heapq;
-import helper;
+import random
+import heapq
+import helper
 
 class Maze:
-	# int dimension;
-	# float probability;
-	# list mazeCells;
-
+	'''
+	parameters: int dim- dimension;
+				float p- probability;
+				list mazeCells;
+	Returns the mazeObject for a given value of dim and p
+	'''
 	def __init__(self, dim, p):
 		self.dimension = dim
 		self.probability = p
@@ -23,6 +25,13 @@ class Maze:
 
 
 	def giveEligibleChild(self, x, y):
+		'''
+		parameters: x and y coordinate of the current state
+		return: all the eligible children for that state.
+
+		Checks for boundry condition and that child node is empty
+		that is not a block or in closed state. 
+		'''
 		children=[]
 		if x-1 >= 0:
 			if self.mazeCells[x-1][y]==0:
@@ -37,37 +46,42 @@ class Maze:
 			if self.mazeCells[x][y+1]==0:
 				children.append((x,y+1))
 		return children
-	
-	def printPath():
-		return something
 
 		
 	def BFS(self):
-		fringe = [(0, 0,(-1,-1))]  # Initial Start node of Matrix which is also the path traversed till now
+		'''
+		Takes as input the Maze maze Object and
+		returns the path traversed according to Breadth First Search
+		Fringe stores the values as tuple of (x,y,parent) x and y are coordinates of current state
+		fringe DataStructure: Queue
+		'''
+		fringe = [(0, 0,(-1,-1))]
+		goal_state = (self.dimension-1,self.dimension-1)
 		closedSet = []
 		path = {}
-		while len(fringe) != 0:		#Fringe not empty execute
-			(x,y,(parentx, parenty)) = fringe.pop(0)		#Dequeue the first element of Fringe
-			# (x,y)=recent_Path[-1]		# (x,y) will be the last node of element dequeued from which we want to continue our path
-			# x,y=state
-			# print(recent_path)
-
+		while len(fringe) != 0:		
+			(x,y,(parentx, parenty)) = fringe.pop(0)
+			'''
+			For each x and y we check they aren't alread visited i.e. not in closed set
+			and generate the eligible child and append them to the fringe.
+			Also add to the path dictonary the key:current state and value: parent state pair  
+			Add the current state (x,y) to the closed set.
+			'''
 			if (x,y) not in closedSet:
-				childList = self.giveEligibleChild(x,y)		#Generate Eligible Children(Unblocked) if not in closed set
+				childList = self.giveEligibleChild(x,y)		
 				path[(x,y)] = (parentx,parenty)
-				# print(childList)
 				for (childx, childy) in childList:
 					fringe.append((childx, childy, (x,y)))
-					# return path if neighbour is goal
-					if (childx, childy) == (self.dimension-1,self.dimension-1):  #If child is goal return the new list
+					if (childx, childy) == goal_state:  
 						path[(childx,childy)] = (x,y)
 						return self.getPath(path, childx, childy)
-				closedSet.append((x,y))						#Mark last node of element dequeued as Visited
-
-		# print(recent_Path)
-		return []								# Return False if goal not found
+				closedSet.append((x,y))
+		return []
 
 	def treeSearch(self):
+		'''
+		Similar Implementation to DFS used for A* search algorithm.
+		'''
 		(startx, starty) = (0,0)
 		(endx , endy) = (self.dimension -1, self.dimension-1)
 		path = {};
@@ -87,12 +101,23 @@ class Maze:
 		return ([], closedSet);
 
 	def bidirection(self):
-		fringe1 = [[(0, 0)]]
-		fringe2 = [[(self.dimension - 1, self.dimension - 1)]]
-		closed1 = {(0, 0): True}
+		'''
+		A bidirectional BFS implementation
+		input: Maze Object
+		return: path
+		fringe1, closed1: from Source
+		fringe2, closed2: from Goal
+		fringe DataStructure: Queue
+		'''
+		fringe1 = [[(0, 0)]]	#inital source state
+		fringe2 = [[(self.dimension - 1, self.dimension - 1)]]	#Goal state
+		closed1 = {(0, 0): True} 
 		closed2 = {(self.dimension - 1, self.dimension - 1): True}
 		while fringe1 and fringe2:
 			if fringe1:
+				'''
+				BFS implementation from source
+				'''
 				recent_path1 = fringe1.pop(0)
 				(x, y) = recent_path1[-1]
 				children = self.giveEligibleChild(x, y)
@@ -102,9 +127,15 @@ class Maze:
 						new_Path = list(recent_path1)  # New list to append in fringe after adding the child
 						new_Path.append(child)
 						fringe1.append(new_Path)
+						'''
+						child reaches the goal or intersects with the fringe from goal
+						'''
 						if child == (self.dimension - 1, self.dimension - 1) or child in fringe2:
 							return new_Path
 			if fringe2:
+				'''
+				BFS implementation from Goal
+				'''
 				recent_path2 = fringe2.pop(0)
 				(x, y) = recent_path2[-1]
 				children = self.giveEligibleChild(x, y)
@@ -114,12 +145,20 @@ class Maze:
 						new_Path = list(recent_path2)  # New list to append in fringe after adding the child
 						new_Path.append(child)
 						fringe2.append(new_Path)
+						'''
+						child reaches the goal or intersects with the fringe from goal
+						'''
 						if child == (0, 0) or child in fringe1:
 							return new_Path
 		return []
 
 	def dfs(self):
-
+		'''
+		Takes as input the Maze maze Object and
+		returns the path traversed according to Breadth First Search
+		Fringe stores the values as tuple of (x,y,parent) x and y are coordinates of current state
+		fringe DataStructure: Stack
+		'''
 		goal_state = (self.dimension-1,self.dimension-1)
 		fringe = [(0,0,(-1,-1))] #x,y,path
 		closed_set = [] 
@@ -127,28 +166,37 @@ class Maze:
 		while (len(fringe)):
 			(x,y,(parentx, parenty)) = fringe.pop()
 			current_state = (x,y)
-			
+			'''
+			For each x and y we check they aren't alread visited i.e. not in closed set
+			and generate the eligible child and append them to the fringe.
+			Also add to the path dictonary the key:current state and value: parent state pair  
+			Add the current state (x,y) to the closed set.
+			'''
 			if(current_state not in closed_set):
-
 				if (current_state == goal_state):
 					path[current_state] = (parentx, parenty)
 					return self.getPath(path, goal_state[0], goal_state[1])
-
-				children = self.giveEligibleChild(x,y)
-				#print(children)
 				
+				children = self.giveEligibleChild(x,y)
 				for a,b in children:
 					fringe.append((a,b,(x,y)))
+
 				path[current_state] = (parentx, parenty)
-				
 				closed_set.append(current_state)
 		return []
 
+
 	def aStarSearch(self, distanceFunction):
+		'''
+		parameters: mazeObject and distanceFunction- Manhatan or Euclid
+		return: path
+		fringe: priority, tuple of(x,y,parent)
+		fringe DataStructure: PriorityQueue/Heap
+		'''
 		(startx, starty) = (0,0)
 		(endx , endy) = (self.dimension -1, self.dimension-1)
 		path = {}
-		fringe = [(0,(startx,starty, (-1, -1, 0)))];
+		fringe = [(0,(startx,starty, (-1, -1, 0)))]
 		closedSet = [];
 		while (len(fringe) != 0):
 			(heuristicValue,(x, y, (parentx,parenty,pathLength))) = heapq.heappop(fringe);
@@ -166,6 +214,9 @@ class Maze:
 
 
 	def getPath(self, path, endx, endy):
+		'''
+		returns path by backtracking the parent of current_state recurssively
+		'''
 		pathList = [(endx, endy)]
 		while path[pathList[-1]]!=(-1,-1):
 			pathList.append(path[pathList[-1]])
