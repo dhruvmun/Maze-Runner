@@ -3,7 +3,7 @@ import helper
 import time
 import visualization
 
-dimension = 15
+dimension = 50
 probability = 0.2
 path = []
 while len(path) == 0:
