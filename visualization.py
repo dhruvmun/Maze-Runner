@@ -4,6 +4,7 @@ from PIL import Image
 import io
 import os
 
+# Uses turtle graphics to Visualize the maze, paths, explored nodes etc
 class Visualize:
 
 	def __init__(self, title, color, bx = 0, by = 0):

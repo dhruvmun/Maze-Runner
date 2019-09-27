@@ -19,11 +19,11 @@ def probability_threshold():
 			path = mazeObject.aStarSearch(helper.manhattanDistance) #Returns the shortest path from source to Goal
 			if path == []: #That is no solution exists
 				unsol += 1
-
+			# print (str(p)+": "+ str(unsol))
 		if unsol != no_of_maze_per_prob:
 			p0 = p
 
-		solvability.append((1-(unsol/no_of_maze_per_prob)))
+		solvability.append((1-(float(unsol)/no_of_maze_per_prob)))
 	return p0
 
 def plotgraph():

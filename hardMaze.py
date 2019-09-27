@@ -28,7 +28,7 @@ def aStarWithDistanceFunction(maze, distanceFunction = helper.manhattanDistance)
 			if (x,y) == (endx,endy):
 				path[(x,y)] = (parentx,parenty)
 				# once we reach the goal return with the required hardness values
-				return (len(maze.getPath(path)),len(closedSet), maxFringeLength)
+				return (len(maze.getPath(path, endx, endy)),len(closedSet), maxFringeLength)
 			eligibleChildren = maze.giveEligibleChild(x,y);
 			for (cx,cy) in eligibleChildren:
 				# calculating the heuristic value using distance function and adding pathLength
@@ -67,7 +67,7 @@ def dfsWithMaxFringe(maze, distanceFunction = None):
 		if (x,y) not in closedSet:
 			if (x,y) == (endx,endy):
 				path[(x,y)] = (parentx,parenty)
-				return (len(maze.getPath(path)), None, maxFringeLength);
+				return (len(maze.getPath(path, endx, endy)), None, maxFringeLength);
 			eligibleChildren = maze.giveEligibleChild(x,y);
 			for (cx,cy) in eligibleChildren:
 				fringe.append((cx,cy,(x,y)))

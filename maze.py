@@ -223,6 +223,8 @@ class Maze:
 		pathList.reverse()
 		return pathList
 
+	# Gives hardness values defined in the problem by running astar algorithm with given distanceFunction
+	# path length, explored nodes, max fringe length
 	def hardnessValues(self, distanceFunction):
 		(startx, starty) = (0,0)
 		(endx , endy) = (self.dimension -1, self.dimension-1)
@@ -247,7 +249,9 @@ class Maze:
 				path[(x,y)] = (parentx,parenty)
 		return (0,len(closedSet),maxFringeLength)
 
+	# Given the hardness values above calculating a hardness score from them giving particular weights
 	def hardnessScore(self, pathLength, exploredNodes, maxFringeLength):
+		# normalize the above hardness values using dimension of the maze
 		if pathLength != 0 :
 			pathScore = float(2*self.dimension-1)/float(pathLength)
 		else:
@@ -256,6 +260,7 @@ class Maze:
 		fringeScore = maxFringeLength/float(self.dimension*self.dimension)
 		return (2*pathScore + 3*exploredScore + fringeScore)/6
 
+	# gives the count of neigbours which has fire
 	def giveFireNeighbours(self, x, y):
 		k = 0
 		if(x-1>=0 and self.mazeCells[x-1][y]==2):	#Blocked cell cannot catch fire
@@ -268,6 +273,7 @@ class Maze:
 			k+=1
 		return k
 
+	# gives the list of neighbours unblocked and not already visited in closed set
 	def giveUnclosedChild(self, x, y,closed):
 		children=[]
 		reqChild=[]
