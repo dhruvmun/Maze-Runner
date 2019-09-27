@@ -271,6 +271,7 @@ class Maze:
 	def giveUnclosedChild(self, x, y,closed):
 		children=[]
 		reqChild=[]
+		backChild=[]
 		if x-1 >= 0:
 			if self.mazeCells[x-1][y]==0:
 				children.append((x-1,y))
@@ -283,7 +284,15 @@ class Maze:
 		if y+1<=self.dimension-1:
 			if self.mazeCells[x][y+1]==0:
 				children.append((x,y+1))
+		# if len(children)==1:
+		# 	return children
+		# else:
 		for child in children:
 			if child not in closed:
 				reqChild.append(child)
-		return reqChild
+			else:
+				backChild.append(child)
+		if len(reqChild)==0:
+			return backChild
+		else:
+			return reqChild
