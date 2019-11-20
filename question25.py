@@ -71,45 +71,55 @@ class Maze:
 					break
 				eligibleChildren = self.giveEligibleChild(x,y);
 				for (cx,cy) in eligibleChildren:
-					heuristic = distanceFunction((cx,cy),(endx,endy))+pathLength
+					heuristic = distanceFunction(cx,cy,endx,endy)+pathLength
 					heapq.heappush(fringe,(heuristic,(cx,cy,(x,y,pathLength+1))))
 				closedSet.append((x,y))
 				
 		return (max_fringe_len, len(closedSet))
 
 
-p = [0.2, 0.3, 0.4, 0.5]
+p = [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
 dim = 100
-no_of_maze_per_prob = 20
-'''
-Fringe and closedSet parameters to compare both search algorithms.
-'''
+no_of_maze_per_prob = 10
 total_max_fringe1 = []
 total_max_fringe2 = []
 total_closedSet1 = []
 total_closedSet2 = []
 
-def cal():
+def cal(w):
+	max_fringe_len1, closedSet1 = 0,0
+	max_fringe_len2, closedSet2 = 0,0
 	for i in range(no_of_maze_per_prob):
-		mazeObject = Maze(dim, p)
-		max_fringe_len1, closedSet1 = mazeObject.aStarSearch(helper.manhattanDistance)
-		max_fringe_len2, closedSet2 = mazeObject.aStarSearch(helper.euclidDistance)
+		mazeObject = Maze(dim, w)
+		mfl1, cs1 = mazeObject.aStarSearch(helper.manhattanDistance)
+		mfl2, cs2 = mazeObject.aStarSearch(helper.euclidDistance)
 		
-		total_max_fringe1.append(max_fringe_len1)
-		total_max_fringe2.append(max_fringe_len2)
-		total_closedSet1.append(closedSet1)
-		total_closedSet2.append(closedSet2)
-	
-	plotGraph(total_max_fringe1, total_max_fringe2, total_closedSet1, total_closedSet2)
+		max_fringe_len1 += mfl1
+		closedSet1 += cs1
+		max_fringe_len2 += mfl2
+		closedSet2 += cs2
+
+	print(max_fringe_len1, max_fringe_len2, closedSet1, closedSet2)
+	total_max_fringe1.append(float(max_fringe_len1)/no_of_maze_per_prob)
+	total_max_fringe2.append(float(max_fringe_len2)/no_of_maze_per_prob)
+	total_closedSet1.append(float(closedSet1)/no_of_maze_per_prob)
+	total_closedSet2.append(float(closedSet2)/no_of_maze_per_prob)
+
 
 def plotGraph(total_max_fringe1, total_max_fringe2, total_closedSet1, total_closedSet2):
 	fig, axs = plt.subplots(2)
-	axs[0].plot(total_max_fringe1)
-	axs[0].plot(total_max_fringe2)
+	axs[0].plot(p,total_max_fringe1,label='Manhattan')
+	axs[0].plot(p,total_max_fringe2,label='Euclid')
 	axs[0].title.set_text('Maximum length of fringe')
-	axs[1].plot(total_closedSet1)
-	axs[1].plot(total_closedSet2)
+	axs[0].legend()
+	axs[1].plot(p,total_closedSet1,label='Manhattan')
+	axs[1].plot(p,total_closedSet2,label='Euclid')
 	axs[1].title.set_text('Length of Closed set')
+	axs[1].legend()
 	plt.show()
 
-cal()
+for w in p:
+	print(w)
+	cal(w)
+plotGraph(total_max_fringe1, total_max_fringe2, total_closedSet1, total_closedSet2)
+
