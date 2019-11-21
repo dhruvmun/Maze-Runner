@@ -5,19 +5,21 @@ import question23
 import random
 import helper_24
 
-
-
-p0=question23.probability_threshold()           #Using Threshold Probability from previous question
+# Using Threshold Probability from previous question
+p0=question23.probability_threshold()
 prob=[round(random.uniform(0,p0),2) for _ in range(6)]  #Random Probability generated from 0 to p0
 prob.sort()
+# prob=[0.1,0.2,0.3,0.4,0.5,0.6]
 dim=50
 no_of_run=15        #No. of Runs for each probability
+
 #List created for each Algorithm
 bfs=[]
 dfs=[]
 bibfs=[]
 euclid=[]
 mann=[]
+
 #Variables for each algorithm for calculating average
 sumBfs=0
 countBfs=0
@@ -29,63 +31,64 @@ sumEuclid=0
 countEuclid=0
 sumMann=0
 countMann=0
-#Calculated avg length of path for each algorithm
-for p in prob:
-    for k in range(no_of_run):
-        a = maze.Maze(dim, p)
-        bfs1 = len(a.BFS())         #Calculating length of path returned
-        if bfs1 != 0:
-            sumBfs += bfs1
-            countBfs += 1
-        dfs1 = len(a.dfs())         #Calculating length of path returned
-        if dfs1!=0:
-            sumDfs += dfs1
-            countDfs += 1
-        bibfs1 = len(a.bidirection())   #Calculating length of path returned
-        if bibfs1!=0:
-            sumBibfs += bibfs1
-            countBibfs += 1
-        euclid1 = len(a.aStarSearch(helper.euclidDistance)) #Calculating length of path returned
-        if euclid1!=0:
-            sumEuclid += euclid1
-            countEuclid += 1
-        mann1 = len(a.aStarSearch(helper.manhattanDistance))        #Calculating length of path returned
-        if mann1!=0:
-            sumMann += mann1
-            countMann += 1
-    # Calculating Avg for all the runs
-    if countBfs!=0:
-        bfs.append((sumBfs/countBfs))
-    elif countBfs==0:
-        bfs.append(countBfs)
-    if countDfs != 0:
-        dfs.append((sumDfs / countDfs))
-    elif countDfs == 0:
-        dfs.append(countBfs)
-    if countBibfs != 0:
-        bibfs.append((sumBibfs / countBibfs))
-    elif countBibfs == 0:
-        bibfs.append(countBibfs)
-    if countEuclid != 0:
-        euclid.append((sumEuclid / countEuclid))
-    elif countEuclid == 0:
-        euclid.append(countEuclid)
-    if countMann != 0:
-        mann.append((sumMann / countMann))
-    elif countMann == 0:
-        mann.append(countMann)
+#
+# #Calculated avg length of path for each algorithm
+# for p in prob:
+#     for k in range(no_of_run):
+#         a = maze.Maze(dim, p)
+#         bfs1 = len(a.BFS())         #Calculating length of path returned
+#         if bfs1 != 0:
+#             sumBfs += bfs1
+#             countBfs += 1
+#         dfs1 = len(a.dfs())         #Calculating length of path returned
+#         if dfs1!=0:
+#             sumDfs += dfs1
+#             countDfs += 1
+#         bibfs1 = len(a.bidirection())   #Calculating length of path returned
+#         if bibfs1!=0:
+#             sumBibfs += bibfs1
+#             countBibfs += 1
+#         euclid1 = len(a.aStarSearch(helper.euclidDistance)) #Calculating length of path returned
+#         if euclid1!=0:
+#             sumEuclid += euclid1
+#             countEuclid += 1
+#         mann1 = len(a.aStarSearch(helper.manhattanDistance))        #Calculating length of path returned
+#         if mann1!=0:
+#             sumMann += mann1
+#             countMann += 1
+#     # Calculating Avg for all the runs
+#     if countBfs!=0:
+#         bfs.append((sumBfs/countBfs))
+#     elif countBfs==0:
+#         bfs.append(countBfs)
+#     if countDfs != 0:
+#         dfs.append((sumDfs / countDfs))
+#     elif countDfs == 0:
+#         dfs.append(countDfs)
+#     if countBibfs != 0:
+#         bibfs.append((sumBibfs / countBibfs))
+#     elif countBibfs == 0:
+#         bibfs.append(countBibfs)
+#     if countEuclid != 0:
+#         euclid.append((sumEuclid / countEuclid))
+#     elif countEuclid == 0:
+#         euclid.append(countEuclid)
+#     if countMann != 0:
+#         mann.append((sumMann / countMann))
+#     elif countMann == 0:
+#         mann.append(countMann)
+#
+# #Plotting graph between Avg Length and Density for each graph
+# plt.plot(prob, bfs,label='BFS')
+# plt.plot(prob, dfs,label='DFS')
+# plt.plot(prob,bibfs,label='BIBFS')
+# plt.plot(prob,euclid,label='Euclid')
+# plt.plot(prob,mann,label='Manhattan')
+# plt.ylabel('Average')
+# plt.xlabel('Density')
+# plt.title('Average vs Density')
+# plt.show()
 
-#Plotting graph between Avg Length and Density for each graph
-plt.plot(prob, bfs,label='BFS')
-plt.plot(prob, dfs,label='DFS')
-plt.plot(prob,bibfs,label='BIBFS')
-plt.plot(prob,euclid,label='Euclid')
-plt.plot(prob,mann,label='Manhattan')
-plt.ylabel('Average')
-plt.xlabel('Density')
-plt.title('Average vs Density')
-plt.show()
-closedSet()
 
 
 
@@ -102,12 +105,12 @@ def closedSet():        #Method to calculate length of closed set to compare all
     closedMann=0
     for p in prob:
         for k in range(no_of_run):
-            b=helper_24.Maze_helper(dim,p)
-            closebfs+=b.BFS()                   #Each Algorithm will return length of closed set
-            closedfs+=b.dfs()
-            closedBiBfs+=b.bidirection()
-            closedEuclid+=b.aStarSearch(helper.euclidDistance)
-            closedMann+=b.aStarSearch(helper.manhattanDistance)
+            b=maze.Maze(dim,p)
+            closebfs+=len(b.BFS())                   #Each Algorithm will return length of closed set
+            closedfs+=len(b.dfs())
+            closedBiBfs+=len(b.bidirection())
+            closedEuclid+=len(b.aStarSearch(helper.euclidDistance))
+            closedMann+=len(b.aStarSearch(helper.manhattanDistance))
         totalBfs.append(closebfs/no_of_run)
         totalDfs.append(closedfs/no_of_run)
         totalBidirection.append(closedBiBfs/no_of_run)
@@ -125,3 +128,16 @@ def closedSet():        #Method to calculate length of closed set to compare all
     print("bibfs=" + str(Bidir))
     print("Euclid=" + str(Eucl))
     print("Manhattan=" + str(Mannt))
+    plt.plot(prob, totalBfs, label='BFS')
+    plt.plot(prob, totalDfs, label='DFS')
+    plt.plot(prob, totalBidirection, label='BIBFS')
+    plt.plot(prob, totalEuclid, label='Euclid')
+    plt.plot(prob, totalMann, label='Manhattan')
+    plt.ylabel('Average Length')
+    plt.xlabel('Density')
+    plt.title('Average Length vs Density')
+    plt.legend()
+    plt.show()
+
+
+closedSet()
